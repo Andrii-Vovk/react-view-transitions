@@ -2,6 +2,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import musicList from "../music-list";
 import { transitionHelper } from "../transition-helpers";
 import { flushSync } from "react-dom";
+import { sendNotification } from "../notification-helpers";
 
 const MusicId = () => {
   const params = useParams();
@@ -18,6 +19,10 @@ const MusicId = () => {
   };
 
   const music = musicList.find((music) => music.id === Number(params.id));
+
+  const notifyMe = () => {
+    sendNotification(music?.name || "", music?.artist || "");
+  };
 
   if (!music) {
     return (
@@ -49,6 +54,13 @@ const MusicId = () => {
         <h3 className="mb-1 font-sans text-3xl text-white">{music.name}</h3>
         <p className="font-sans text-xl text-sky-400">{music.artist}</p>
         <p className="text-sky-200 font-sans text-xl max-w-[1000px] mt-3">{music.description}</p>
+        <button
+          className="mt-3 font-sans text-lg text-white transition-opacity hover:opacity-80"
+          type="button"
+          onClick={notifyMe}
+        >
+          Notify me →
+        </button>
       </div>
     </div>
   );
